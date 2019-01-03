@@ -1,0 +1,112 @@
+﻿# The script of the game goes in this file.
+
+# Defines TSA-Chan as t for dialogue.
+
+define t = Character("TSA-Chan")
+
+# Defines commands as character sprite images.
+
+# Credit to Au Crowne, "Project: Alice" at https://aucrowne.itch.io/
+# for the temporary TSA-Chan character sprites.
+
+image tsa-chan = "TSA-Chan Temp.png"
+image tsa-chan happy = "TSA-Chan Happy.png"
+
+# Defines player's name and pronouns.
+
+default p_name = ""
+default p_he_up = "He"
+default p_he_low = "he"
+default p_his_high = "His"
+default p_her_high = "Her"
+default p_him_up = "Him"
+default p_him_low = "him"
+
+# The game starts here.
+
+label start:
+
+# Shows the background, a road.
+# Credit to a screencap of The Rolling Girls.
+# Found here: https://faevorite.wordpress.com/tag/scenery/.
+
+    scene bg roadscenery
+
+# Asks what's your name with a character length of 15.
+# Lets player use their keyboard to enter a name.
+
+    $ p_name = renpy.input("What's your name?", length=15)
+    $ p_name = p_name.strip()
+
+# If left blank, use Riley as a default name.
+
+    if not p_name:
+        $ p_name = "Riley"
+
+# Asks if player is sure they want that name.
+# If yes, continue. If not, go back to What's your name?.
+
+menu:
+    "Are you sure?"
+
+    "Yes":
+        jump gender
+    "No":
+        jump start
+
+label gender:
+menu:
+    "You are now named [p_name]."
+
+    "What gender are you?"
+
+# A menu pops up Female and Male. If female, changes default pronouns
+# to feminine pronouns. If male, no need to change as it's already masculine.
+
+    "Female":
+        $ p_he_up = "She"
+        $ p_he_low = "she"
+        $ p_his_high = "Hers"
+        $ p_his_low = "hers"
+        $ p_him_up = "Her"
+        $ p_him_low = "her"
+        jump greet
+
+    "Male":
+        jump greet
+
+label greet:
+
+# Changes background to a shiny college.
+# Unknown origin, reverse image search helps none.
+
+    scene bg shinycollegeview
+
+# Brings up TSA-Chan, default.
+
+    show tsa-chan
+
+    t "Hey! Welcome!"
+
+    "After greeting you, she takes a deep breath and shouts."
+
+    show tsa-chan happy
+
+# Uses the He / Her pronoun in place of [p_he_up].
+# Same with [p_name], but with the player's name.
+
+    t "[p_he_up]'s here!"
+
+    show tsa-chan
+
+    "???" "Who?"
+
+    show tsa-chan happy
+
+    t "[p_name]!"
+
+# This ends the game.
+
+    return
+
+
